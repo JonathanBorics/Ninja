@@ -38,7 +38,7 @@
         android:layout_below="@id/startButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="TUTORIAL"
+        android:text="TUTORIAlL"
         android:textSize="24sp"
         android:backgroundTint="#FFA500" />
 
