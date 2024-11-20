@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tutorialText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="The goal of the game is to answer math questions quickly and correctly. Practice, increase your score and be the best!"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="225dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tutorialText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="BACK"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FFA500" />
+
+
+
+</RelativeLayout>

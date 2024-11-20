@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/szamok">
+
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:background="#E6FFFFFF"
+        android:padding="8dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/optionButton1"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="+ -"
+            android:backgroundTint="#FFA500"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/optionButton2"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="* /"
+            android:backgroundTint="#FFA500"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

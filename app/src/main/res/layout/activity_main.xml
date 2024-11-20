@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/szamok"
+    tools:context=".MainActivity">
+
+    <!-- Logó kép -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="-20dp"
+        android:src="@drawable/ninja1_logo"
+        android:contentDescription="@string/logo_description" />
+
+    <!-- START gomb -->
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="225dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/logoImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="START"
+        android:textSize="24sp"
+        android:backgroundTint="#FFA500" />
+
+    <!-- TUTORIAL gomb -->
+    <Button
+        android:id="@+id/tutorialButton"
+        android:layout_width="225dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/startButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="TUTORIAL"
+        android:textSize="24sp"
+        android:backgroundTint="#FFA500" />
+
+</RelativeLayout>

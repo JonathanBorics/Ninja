@@ -1,0 +1,9 @@
+<resources>
+    <!-- Egyedi gomb stílus narancssárga háttérrel -->
+    <style name="CustomButtonStyle">
+        <item name="android:backgroundTint">#FFA500</item>
+        <item name="android:textColor">#FFFFFF</item> <!-- Fehér szöveg -->
+        <item name="android:padding">8dp</item>
+
+    </style>
+</resources>
