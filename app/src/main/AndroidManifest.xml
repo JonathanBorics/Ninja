@@ -13,9 +13,9 @@
         android:theme="@style/Theme.Mathninja"
         tools:targetApi="31">
 
-        <!-- Fő Activity -->
+        <!-- Splash Activity (kezdő képernyő) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +23,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Fő Activity -->
+        <activity android:name=".MainActivity" android:exported="true" />
+
         <!-- Regisztráld az összes további Activity-t -->
         <activity android:name=".GameNameInputActivity" />
         <activity android:name=".GameOptionsActivity" />
         <activity android:name=".GameTutorialActivity" />
-        <activity android:name=".SplashActivity" />
+        <activity android:name=".GamePlusMinusGame"/>
+        <activity android:name=".GameMultiplicationDivisionActivity"/>
     </application>
 
 </manifest>
