@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
 
+
         <!-- Fő Activity -->
         <activity android:name=".MainActivity" android:exported="true" />
 

@@ -135,4 +135,16 @@ public class GamePlusMinusGame extends AppCompatActivity {
             mathQuestion.setText("Wrong! Try again.");
         }
     }
+    private void checkAnswer(int selectedAnswer, int correctAnswer, long playerId) {
+        DatabaseManager dbManager = new DatabaseManager(this);
+        if (selectedAnswer == correctAnswer) {
+            dbManager.updateScore(playerId, 5); // 5 pont hozzáadása helyes válaszért
+            mathQuestion.setText("Helyes! Új kérdés következik.");
+        } else {
+            dbManager.updateScore(playerId, -3); // 3 pont levonása helytelen válaszért
+            mathQuestion.setText("Helytelen! Próbáld újra.");
+        }
+        generateMathQuestion(); // Új kérdés generálása
+    }
+
 }
