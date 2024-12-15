@@ -3,6 +3,37 @@
     android:layout_height="match_parent"
     android:background="@drawable/b4">
 
+    <!-- Szívek (életek) a jobb felső sarokban -->
+    <LinearLayout
+        android:id="@+id/livesContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:id="@+id/heart1"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/heart_full" />
+
+        <ImageView
+            android:id="@+id/heart2"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/heart_full" />
+
+        <ImageView
+            android:id="@+id/heart3"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/heart_full" />
+
+    </LinearLayout>
+
+    <!-- Matematikai kérdés -->
     <TextView
         android:id="@+id/mathQuestion"
         android:layout_width="wrap_content"
@@ -17,16 +48,25 @@
         android:textStyle="bold"
         android:layout_alignParentTop="true" />
 
+    <!-- Pontszám -->
     <TextView
         android:id="@+id/totalScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Score: 0"
-        android:textSize="18sp"
-        android:textColor="@color/black" />
+        android:layout_marginStart="16dp"
+        android:background="#AA000000"
+        android:padding="8dp"
+        android:text="Pontszám: 0"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3" />
 
+    <!-- Opciók gombok -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +116,5 @@
             android:layout_marginBottom="10dp"
             android:backgroundTint="@android:color/holo_purple" />
     </LinearLayout>
-
-
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.math_ninja;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
 
     private TextView mathQuestion;
     private Button multiplyButton1, multiplyButton2, multiplyButton3, multiplyButton4;
+    private Vibrator vibrator; // Vibrátor hozzáadása
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,9 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
         multiplyButton2 = findViewById(R.id.optionButton2);
         multiplyButton3 = findViewById(R.id.optionButton3);
         multiplyButton4 = findViewById(R.id.optionButton4);
+
+        // Vibrátor inicializálása
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         generateMathQuestion(); // Load a question when the activity starts
     }
@@ -87,7 +93,15 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
             mathQuestion.setText(R.string.correct_answer); // Using string resource
             generateMathQuestion(); // Generate a new question if the answer is correct
         } else {
+            // Helytelen válasz esetén rezgés indítása
+            triggerVibration();
             mathQuestion.setText(R.string.wrong_answer); // Using string resource
+        }
+    }
+
+    private void triggerVibration() {
+        if (vibrator != null) {
+            vibrator.vibrate(500); // 500 ms rezgés helytelen válasznál
         }
     }
 }

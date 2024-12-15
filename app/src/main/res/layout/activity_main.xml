@@ -38,8 +38,40 @@
         android:layout_below="@id/startButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="TUTORIAlL"
+        android:text="TUTORIAL"
         android:textSize="24sp"
         android:backgroundTint="#FFA500" />
+
+    <!-- Ikonok vízszintesen egymás mellett -->
+    <LinearLayout
+        android:id="@+id/iconLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <!-- Zene be/ki kapcsoló ikon -->
+        <ImageView
+            android:id="@+id/soundToggle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_sound_on"
+            android:contentDescription="Sound Toggle"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Rezges be/ki kapcsoló ikon -->
+        <ImageView
+            android:id="@+id/vibrationToggle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_vibration_on"
+            android:contentDescription="Vibration Toggle"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
 
 </RelativeLayout>

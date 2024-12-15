@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +21,12 @@ public class GamePlusMinusGame extends AppCompatActivity {
     private static final String TAG = "GamePlusMinusGame";
     private TextView mathQuestion, scoreTextView;
     private Button optionButton1, optionButton2, optionButton3, optionButton4;
+    private ImageView heart1, heart2, heart3; // Szívek (életek) megjelenítéséhez
     private long playerId;
     private int currentScore = 0;
     private int wrongAnswerCount = 0;
+    private int livesRemaining = 3; // Életek száma
+    private Vibrator vibrator; // Rezgés kezeléséhez
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,14 @@ public class GamePlusMinusGame extends AppCompatActivity {
         optionButton2 = findViewById(R.id.optionButton2);
         optionButton3 = findViewById(R.id.optionButton3);
         optionButton4 = findViewById(R.id.optionButton4);
+
+        // Szívek inicializálása
+        heart1 = findViewById(R.id.heart1);
+        heart2 = findViewById(R.id.heart2);
+        heart3 = findViewById(R.id.heart3);
+
+        // Vibrátor inicializálása
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         SharedPreferences prefs = getSharedPreferences("GamePrefs", MODE_PRIVATE);
         playerId = prefs.getLong("playerId", -1);
@@ -113,18 +126,35 @@ public class GamePlusMinusGame extends AppCompatActivity {
         } else {
             currentScore -= 3;
             wrongAnswerCount++;
+            livesRemaining--; // Csökkentjük az életek számát
+            updateLivesUI(); // Frissítjük a szívek megjelenítését
+
             runOnUiThread(() -> {
                 scoreTextView.setText("Pontszám: " + currentScore);
                 Toast.makeText(this, "Helytelen válasz!", Toast.LENGTH_SHORT).show();
             });
 
-            if (wrongAnswerCount >= 3) {
+            if (livesRemaining <= 0) { // Ha nincs több élet, vége a játéknak
+                triggerVibration(); // Rezgés hozzáadása
                 endGame();
                 return;
             }
         }
 
         new Thread(this::generateMathQuestion).start();
+    }
+
+    private void updateLivesUI() {
+        // Frissíti a szívek megjelenítését a hátralévő életek alapján
+        if (livesRemaining < 3) heart3.setImageResource(R.drawable.heart_empty);
+        if (livesRemaining < 2) heart2.setImageResource(R.drawable.heart_empty);
+        if (livesRemaining < 1) heart1.setImageResource(R.drawable.heart_empty);
+    }
+
+    private void triggerVibration() {
+        if (vibrator != null) {
+            vibrator.vibrate(500); // 500 ms-os rezgés
+        }
     }
 
     private void endGame() {
