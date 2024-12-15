@@ -23,16 +23,14 @@
             </intent-filter>
         </activity>
 
-
         <!-- Fő Activity -->
         <activity android:name=".MainActivity" android:exported="true" />
 
-        <!-- Regisztráld az összes további Activity-t -->
-        <activity android:name=".GameNameInputActivity" />
-        <activity android:name=".GameOptionsActivity" />
-        <activity android:name=".GameTutorialActivity" />
-        <activity android:name=".GamePlusMinusGame"/>
-        <activity android:name=".GameMultiplicationDivisionActivity"/>
+        <!-- További Activity-k -->
+        <activity android:name=".GameNameInputActivity" android:exported="true" />
+        <activity android:name=".GameOptionsActivity" android:exported="true" />
+        <activity android:name=".GameTutorialActivity" android:exported="true" />
+        <activity android:name=".GamePlusMinusGame" android:exported="true" />
+        <activity android:name=".GameMultiplicationDivisionActivity" android:exported="true" />
     </application>
-
 </manifest>

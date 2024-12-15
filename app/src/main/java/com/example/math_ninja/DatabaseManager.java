@@ -4,79 +4,91 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-public class DatabaseManager {
+public class DatabaseManager extends DatabaseHelper {
 
-
-    private DatabaseHelper dbHelper;
-
+    private static final String TAG = "DatabaseManager";
 
     public DatabaseManager(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        super(context);
     }
 
     public long addPlayer(String name) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, name);
-        long playerId = db.insert(DatabaseHelper.TABLE_PLAYERS, null, values);
-        db.close();
+        long playerId = -1;
+        SQLiteDatabase db = null;
+        try {
+            db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, name);
+            values.put(COLUMN_SCORE, 0); // Initialize with default score
+            playerId = db.insert(TABLE_PLAYERS, null, values);
+            Log.d(TAG, "addPlayer: Player added with ID=" + playerId);
+        } catch (Exception e) {
+            Log.e(TAG, "Error adding player: " + e.getMessage());
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
         return playerId;
     }
 
-    public void updateScore(long playerId, int scoreChange) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL(
-                "UPDATE " + DatabaseHelper.TABLE_PLAYERS + " SET " +
-                        DatabaseHelper.COLUMN_SCORE + " = " + DatabaseHelper.COLUMN_SCORE + " + ? WHERE " +
-                        DatabaseHelper.COLUMN_PLAYER_ID + " = ?",
-                new Object[]{scoreChange, playerId}
-        );
-        db.close();
-    }
-
-
-
-    public long addGame(long playerId, String mode, int score, int duration) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_PLAYER_ID_FK, playerId); // Már long típusú
-        values.put(DatabaseHelper.COLUMN_MODE, mode);
-        values.put(DatabaseHelper.COLUMN_SCORE, score);
-        values.put(DatabaseHelper.COLUMN_DURATION, duration);
-        long id = db.insert(DatabaseHelper.TABLE_GAMES, null, values);
-        db.close();
-        return id;
-    }
-
-
-    public long addQuestion(int gameId, String questionText, float correctAnswer, float playerAnswer, boolean isCorrect) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_GAME_ID_FK, gameId);
-        values.put(DatabaseHelper.COLUMN_QUESTION_TEXT, questionText);
-        values.put(DatabaseHelper.COLUMN_CORRECT_ANSWER, correctAnswer);
-        values.put(DatabaseHelper.COLUMN_PLAYER_ANSWER, playerAnswer);
-        values.put(DatabaseHelper.COLUMN_IS_CORRECT, isCorrect ? 1 : 0);
-        long id = db.insert(DatabaseHelper.TABLE_QUESTIONS, null, values);
-        db.close();
-        return id;
-    }
-
-
-
-    public int getTotalScore(long playerId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT SUM(" + DatabaseHelper.COLUMN_SCORE + ") FROM " + DatabaseHelper.TABLE_GAMES +
-                        " WHERE " + DatabaseHelper.COLUMN_PLAYER_ID_FK + " = ?",
-                new String[]{String.valueOf(playerId)});
-        int totalScore = 0;
-        if (cursor.moveToFirst()) {
-            totalScore = cursor.getInt(0); // Összesített pontszám
+    public void saveScore(long playerId, int score) {
+        SQLiteDatabase db = null;
+        try {
+            db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SCORE, score);
+            int rowsAffected = db.update(TABLE_PLAYERS, values, COLUMN_PLAYER_ID + "=?", new String[]{String.valueOf(playerId)});
+            if (rowsAffected > 0) {
+                Log.d(TAG, "saveScore: Score updated for playerId=" + playerId);
+            } else {
+                Log.e(TAG, "saveScore: Failed to update score.");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving score: " + e.getMessage());
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
-        cursor.close();
-        db.close();
+    }
+
+    public Cursor getTopScores(int limit) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+            String query = "SELECT * FROM " + TABLE_PLAYERS + " ORDER BY " + COLUMN_SCORE + " DESC LIMIT " + limit;
+            cursor = db.rawQuery(query, null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error fetching top scores: " + e.getMessage());
+        }
+        return cursor;
+    }
+    public int getTotalScore(long playerId) {
+        int totalScore = 0;
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+            String query = "SELECT " + COLUMN_SCORE + " FROM " + TABLE_PLAYERS + " WHERE " + COLUMN_PLAYER_ID + "=?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(playerId)});
+
+            if (cursor.moveToFirst()) {
+                totalScore = cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE));
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseManager", "Error fetching total score: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
         return totalScore;
     }
 

@@ -1,6 +1,7 @@
 package com.example.math_ninja;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -15,15 +16,17 @@ public class GameOptionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_options);
 
-        // Lekérjük a továbbított adatokat
-        String userName = getIntent().getStringExtra("USER_NAME");
-        long userId = getIntent().getLongExtra("USER_ID", -1);
+        // Lekérjük a SharedPreferences adatokat
+        SharedPreferences prefs = getSharedPreferences("GamePrefs", MODE_PRIVATE);
+        String userName = prefs.getString("playerName", null);
+        long userId = prefs.getLong("playerId", -1);
 
         // Ellenőrizzük az adatokat
-        if (userId == -1 || userName == null) {
-            Toast.makeText(this, "Hiba: Érvénytelen azonosító vagy név!", Toast.LENGTH_SHORT).show();
-            Log.e("GameOptionsActivity", "Érvénytelen USER_ID vagy USER_NAME: " + userId + ", " + userName);
-            finish(); // Zárjuk be az Activity-t, ha hibás adatok vannak
+        if (userId == -1 || userName == null || userName.isEmpty()) {
+            Toast.makeText(this, "Hiba: Nincsenek érvényes felhasználói adatok!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, GameNameInputActivity.class);
+            startActivity(intent);
+            finish();
             return;
         }
 
@@ -42,21 +45,17 @@ public class GameOptionsActivity extends AppCompatActivity {
             Log.e("GameOptionsActivity", "Hiba a pontszám lekérésekor: ", e);
         }
 
-        // OptionButton1 click event handler
+        // Plusz/mínusz játék gomb eseménykezelője
         Button optionButton1 = findViewById(R.id.optionButton1);
         optionButton1.setOnClickListener(v -> {
             Intent intent = new Intent(GameOptionsActivity.this, GamePlusMinusGame.class);
-            intent.putExtra("USER_NAME", userName);
-            intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
 
-        // OptionButton2 click event handler
+        // Szorzás/osztás játék gomb eseménykezelője
         Button optionButton2 = findViewById(R.id.optionButton2);
         optionButton2.setOnClickListener(v -> {
             Intent intent = new Intent(GameOptionsActivity.this, GameMultiplicationDivisionActivity.class);
-            intent.putExtra("USER_NAME", userName);
-            intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
     }
