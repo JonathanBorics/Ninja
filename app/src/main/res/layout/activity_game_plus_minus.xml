@@ -33,6 +33,7 @@
 
     </LinearLayout>
 
+
     <!-- Matematikai kérdés -->
     <TextView
         android:id="@+id/mathQuestion"
@@ -64,7 +65,22 @@
         android:shadowColor="#000000"
         android:shadowDx="2"
         android:shadowDy="2"
-        android:shadowRadius="3" />
+        android:shadowRadius="3"
+        />
+
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="36sp"
+        android:textColor="@android:color/black"
+        android:text="Idő: 10s"
+        android:layout_marginEnd="106dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="16dp"
+        />
 
     <!-- Opciók gombok -->
     <LinearLayout
@@ -116,5 +132,6 @@
             android:layout_marginBottom="10dp"
             android:backgroundTint="@android:color/holo_purple" />
     </LinearLayout>
+
 
 </RelativeLayout>

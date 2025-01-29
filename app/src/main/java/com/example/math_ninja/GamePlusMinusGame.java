@@ -3,6 +3,7 @@ package com.example.math_ninja;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.os.Vibrator;
 import android.util.Log;
@@ -27,6 +28,10 @@ public class GamePlusMinusGame extends AppCompatActivity {
     private int wrongAnswerCount = 0;
     private int livesRemaining = 3; // Életek száma
     private Vibrator vibrator; // Rezgés kezeléséhez
+    private CountDownTimer countDownTimer;
+    private TextView timerTextView;
+
+    private static final int TIMER_DURATION = 60000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,40 @@ public class GamePlusMinusGame extends AppCompatActivity {
         optionButton2.setOnClickListener(view -> checkAnswer(Integer.parseInt(optionButton2.getText().toString())));
         optionButton3.setOnClickListener(view -> checkAnswer(Integer.parseInt(optionButton3.getText().toString())));
         optionButton4.setOnClickListener(view -> checkAnswer(Integer.parseInt(optionButton4.getText().toString())));
+
+        timerTextView = findViewById(R.id.timerTextView);
+
+        startTimer();
+    }
+
+    private void startTimer() {
+        countDownTimer = new CountDownTimer(TIMER_DURATION, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the timer display
+                timerTextView.setText("Time left: " + millisUntilFinished / 1000 + " másodperc");
+            }
+
+            @Override
+            public void onFinish() {
+                // When time is up, trigger the same game over logic as 3 wrong answers
+                endGame();
+            }
+        }.start();
+    }
+
+    private void handleTimeOut() {
+        triggerVibration();
+        mathQuestion.setText(R.string.app_name); // Update question text
+        generateMathQuestion(); // Optionally generate a new question
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     private void generateMathQuestion() {

@@ -18,6 +18,8 @@
         android:src="@drawable/ninja1_logo"
         android:contentDescription="@string/logo_description" />
 
+
+
     <!-- START gomb -->
     <Button
         android:id="@+id/startButton"
@@ -72,6 +74,9 @@
             android:contentDescription="Vibration Toggle"
             android:clickable="true"
             android:focusable="true" />
+
+
     </LinearLayout>
+
 
 </RelativeLayout>
