@@ -92,7 +92,7 @@ public class GamePlusMinusGame extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 // Update the timer display
-                timerTextView.setText("Time left: " + millisUntilFinished / 1000 + " másodperc");
+                timerTextView.setText("Time left: " + millisUntilFinished / 1000);
             }
 
             @Override
@@ -159,7 +159,7 @@ public class GamePlusMinusGame extends AppCompatActivity {
         if (selectedAnswer == correctAnswer) {
             currentScore += 5;
             runOnUiThread(() -> {
-                scoreTextView.setText("Pontszám: " + currentScore);
+                scoreTextView.setText("Score: " + currentScore);
                 Toast.makeText(this, "Helyes válasz!", Toast.LENGTH_SHORT).show();
             });
         } else {
@@ -169,7 +169,7 @@ public class GamePlusMinusGame extends AppCompatActivity {
             updateLivesUI(); // Frissítjük a szívek megjelenítését
 
             runOnUiThread(() -> {
-                scoreTextView.setText("Pontszám: " + currentScore);
+                scoreTextView.setText("Score: " + currentScore);
                 Toast.makeText(this, "Helytelen válasz!", Toast.LENGTH_SHORT).show();
             });
 
@@ -199,9 +199,9 @@ public class GamePlusMinusGame extends AppCompatActivity {
     private void endGame() {
         runOnUiThread(() -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Játék vége")
-                    .setMessage("Összesített pontszám: " + currentScore + "\nPróbáld újra!")
-                    .setPositiveButton("Vissza a főmenübe", (dialog, which) -> {
+            builder.setTitle("Game over!")
+                    .setMessage("Total score: " + currentScore + "\nTry again!")
+                    .setPositiveButton("Back to main menu", (dialog, which) -> {
                         Intent intent = new Intent(GamePlusMinusGame.this, GameOptionsActivity.class);
                         startActivity(intent);
                         finish();
@@ -212,6 +212,6 @@ public class GamePlusMinusGame extends AppCompatActivity {
     }
 
     private void updateScoreDisplay() {
-        runOnUiThread(() -> scoreTextView.setText("Pontszám: " + currentScore));
+        runOnUiThread(() -> scoreTextView.setText("Score: " + currentScore));
     }
 }

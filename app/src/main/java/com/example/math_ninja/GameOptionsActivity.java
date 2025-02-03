@@ -32,17 +32,17 @@ public class GameOptionsActivity extends AppCompatActivity {
 
         // Felhasználói név megjelenítése
         TextView userNameTextView = findViewById(R.id.userNameTextView);
-        userNameTextView.setText("Üdv, " + userName + "!");
+        userNameTextView.setText("Hi, " + userName + "!");
 
         // Pontszám megjelenítése
         TextView totalScoreTextView = findViewById(R.id.totalScoreTextView);
         DatabaseManager dbManager = new DatabaseManager(this);
         try {
             int totalScore = dbManager.getTotalScore(userId);
-            totalScoreTextView.setText("Összesített pontszámod: " + totalScore);
+            totalScoreTextView.setText("Your total score: " + totalScore);
         } catch (Exception e) {
-            Toast.makeText(this, "Hiba a pontszám lekérése során!", Toast.LENGTH_SHORT).show();
-            Log.e("GameOptionsActivity", "Hiba a pontszám lekérésekor: ", e);
+            Toast.makeText(this, "Error retrieving score!", Toast.LENGTH_SHORT).show();
+            Log.e("GameOptionsActivity", "Error retrieving score: ", e);
         }
 
         // Plusz/mínusz játék gomb eseménykezelője

@@ -7,42 +7,57 @@
     android:background="@drawable/szamok"
     tools:context=".MainActivity">
 
-    <!-- Logó kép -->
+    <!-- Kisebb logó -->
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="-20dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/ninja1_logo"
         android:contentDescription="@string/logo_description" />
 
-
-
-    <!-- START gomb -->
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="225dp"
-        android:layout_height="60dp"
+    <!-- Gombok konténer (függőleges elrendezés, biztos hely) -->
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/logoImageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="START"
-        android:textSize="24sp"
-        android:backgroundTint="#FFA500" />
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:padding="10dp">
 
-    <!-- TUTORIAL gomb -->
-    <Button
-        android:id="@+id/tutorialButton"
-        android:layout_width="225dp"
-        android:layout_height="60dp"
-        android:layout_below="@id/startButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="TUTORIAL"
-        android:textSize="24sp"
-        android:backgroundTint="#FFA500" />
+        <!-- START gomb -->
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:text="START"
+            android:textSize="22sp"
+            android:backgroundTint="#FFA500"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- TUTORIAL gomb -->
+        <Button
+            android:id="@+id/tutorialButton"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:text="TUTORIAL"
+            android:textSize="22sp"
+            android:backgroundTint="#FFA500"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- High Score gomb -->
+        <Button
+            android:id="@+id/HScoreButton"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:text="HighScore"
+            android:textSize="22sp"
+            android:backgroundTint="#FFA500"/>
+    </LinearLayout>
 
     <!-- Ikonok vízszintesen egymás mellett -->
     <LinearLayout
@@ -50,33 +65,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <!-- Zene be/ki kapcsoló ikon -->
         <ImageView
             android:id="@+id/soundToggle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@drawable/ic_sound_on"
             android:contentDescription="Sound Toggle"
             android:clickable="true"
             android:focusable="true" />
 
-        <!-- Rezges be/ki kapcsoló ikon -->
+        <!-- Rezgés be/ki kapcsoló ikon -->
         <ImageView
             android:id="@+id/vibrationToggle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/ic_vibration_on"
             android:contentDescription="Vibration Toggle"
             android:clickable="true"
             android:focusable="true" />
-
-
     </LinearLayout>
-
 
 </RelativeLayout>

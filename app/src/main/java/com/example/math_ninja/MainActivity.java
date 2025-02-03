@@ -80,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button highScoreButton = findViewById(R.id.HScoreButton);
+        highScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GameHighScore.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

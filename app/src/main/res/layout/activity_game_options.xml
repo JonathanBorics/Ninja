@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_margin="16dp"
-        android:text="Összes pontszám: 0"
+        android:text="Total score: 0"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:background="#E6FFFFFF"
