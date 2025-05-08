@@ -130,28 +130,50 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
     private void generateMathQuestion() {
         Random random = new Random();
 
-        // Generate two random numbers
-        int num1 = random.nextInt(20) + 1; // random number between 1 and 20
-        int num2 = random.nextInt(20) + 1; // random number between 1 and 20
-
-        // Randomly choose an operation
-        String[] operations = {"*", "/"}; // Only multiplication and division
+        // Válasszunk véletlenszerű műveletet
+        String[] operations = {"*", "/"};
         String operation = operations[random.nextInt(operations.length)];
-        int correctAnswer = operation.equals("+") ? num1 * num2 : num1 / num2;
 
+        int num1, num2, correctAnswer;
+
+        if (operation.equals("*")) {
+            // Szorzás esetén: két szám 1 és 12 között
+            num1 = random.nextInt(12) + 1;
+            num2 = random.nextInt(12) + 1;
+            correctAnswer = num1 * num2;
+        } else {
+            // Osztás esetén: biztosítsuk, hogy egész számot kapjunk
+            // Először generálunk egy osztót 1 és 10 között
+            num2 = random.nextInt(10) + 1;
+            // Majd generálunk egy eredményt 1 és 10 között
+            int result = random.nextInt(10) + 1;
+            // Az osztandót az osztó és eredmény szorzataként határozzuk meg
+            num1 = num2 * result;
+            correctAnswer = result;
+        }
+
+        // Opciók generálása
         int[] options = new int[4];
         int correctPosition = random.nextInt(4);
         options[correctPosition] = correctAnswer;
 
-
+        // Generáljunk három különböző helytelen választ
         for (int i = 0; i < 4; i++) {
             if (i != correctPosition) {
+                int incorrectAnswer;
                 do {
-                    options[i] = correctAnswer + random.nextInt(10) - 5;
-                } while (options[i] == correctAnswer || options[i] <= 0);
+                    // A helytelen válasz a helyes válasz ±50% tartományában legyen
+                    int deviation = Math.max(1, correctAnswer / 2);
+                    incorrectAnswer = correctAnswer + random.nextInt(deviation * 2 + 1) - deviation;
+                } while (incorrectAnswer == correctAnswer || // Ne egyezzen a helyes válasszal
+                        incorrectAnswer <= 0 || // Pozitív legyen
+                        contains(options, incorrectAnswer)); // Ne ismétlődjön
+
+                options[i] = incorrectAnswer;
             }
         }
 
+        // UI frissítése a fő szálon
         runOnUiThread(() -> {
             mathQuestion.setText(num1 + " " + operation + " " + num2);
             optionButton1.setText(String.valueOf(options[0]));
@@ -161,50 +183,19 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
         });
     }
 
-
-
-
- /*       // Calculate the correct answer based on the operation
-        if (operation.equals("*")) {
-            correctAnswer = num1 * num2;
-        } else {
-            // Ensure division results in a whole number
-            while (num1 % num2 != 0) { // Ensure num1 is divisible by num2 with no remainder
-                num1 = random.nextInt(20) + 1; // Regenerate num1
-            }
-            correctAnswer = num1 / num2;
-        }
-
-        // Create the question text
-        String questionText = num1 + " " + operation + " " + num2;
-        mathQuestion.setText(questionText);
-
-        // Generate random incorrect answers
-        int[] options = new int[4];
-        int correctPosition = random.nextInt(4); // Randomly choose a position for the correct answer
-        options[correctPosition] = correctAnswer;
-
-        // Fill in the rest of the options with incorrect answers
-        for (int i = 0; i < 4; i++) {
-            if (options[i] == 0) {
-                options[i] = random.nextInt(40) + 1; // Random incorrect answers
+    // Segédfüggvény annak ellenőrzésére, hogy egy szám már szerepel-e a tömbben
+    private boolean contains(int[] array, int value) {
+        for (int item : array) {
+            if (item == value) {
+                return true;
             }
         }
-
-        // Assign the answers to the buttons
-        multiplyButton1.setText(String.valueOf(options[0]));
-        multiplyButton2.setText(String.valueOf(options[1]));
-        multiplyButton3.setText(String.valueOf(options[2]));
-        multiplyButton4.setText(String.valueOf(options[3]));
+        return false;
+    }
 
 
 
-        // Set click listeners for each option using lambdas
-       // multiplyButton1.setOnClickListener(view -> checkAnswer(options[0], correctAnswer));
-       // multiplyButton2.setOnClickListener(view -> checkAnswer(options[1], correctAnswer));
-      //  multiplyButton3.setOnClickListener(view -> checkAnswer(options[2], correctAnswer));
-      //  multiplyButton4.setOnClickListener(view -> checkAnswer(options[3], correctAnswer));
-    } */
+
 
     private void checkAnswer(int selectedAnswer) {
         String currentQuestionText = mathQuestion.getText().toString();
@@ -213,7 +204,13 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
         int num1 = Integer.parseInt(parts[0]);
         int num2 = Integer.parseInt(parts[2]);
         String operation = parts[1];
-        int correctAnswer = operation.equals("+") ? num1 + num2 : num1 - num2;
+
+        int correctAnswer;
+        if (operation.equals("*")) {
+            correctAnswer = num1 * num2;
+        } else { // "/"
+            correctAnswer = num1 / num2;
+        }
 
         if (selectedAnswer == correctAnswer) {
             currentScore += 5;
@@ -224,16 +221,16 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
         } else {
             currentScore -= 3;
             wrongAnswerCount++;
-            livesRemaining--; // Csökkentjük az életek számát
-            updateLivesUI(); // Frissítjük a szívek megjelenítését
+            livesRemaining--;
+            updateLivesUI();
 
             runOnUiThread(() -> {
                 scoreTextView.setText("Pontszám: " + currentScore);
                 Toast.makeText(this, "Helytelen válasz!", Toast.LENGTH_SHORT).show();
             });
 
-            if (livesRemaining <= 0) { // Ha nincs több élet, vége a játéknak
-                triggerVibration(); // Rezgés hozzáadása
+            if (livesRemaining <= 0) {
+                triggerVibration();
                 endGame();
                 return;
             }
@@ -257,12 +254,21 @@ public class GameMultiplicationDivisionActivity extends AppCompatActivity {
 
 
     private void endGame() {
+        // Mentsük el a játékmenetet
+        DatabaseManager dbManager = new DatabaseManager(this);
+        dbManager.saveGameSession(playerId, "multiply_divide", currentScore);
+
         runOnUiThread(() -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Játék vége")
-                    .setMessage("Összesített pontszám: " + currentScore + "\nPróbáld újra!")
+                    .setMessage("Összpontszám: " + currentScore + "\nPróbáld újra!")
                     .setPositiveButton("Vissza a főmenübe", (dialog, which) -> {
                         Intent intent = new Intent(GameMultiplicationDivisionActivity.this, GameOptionsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNeutralButton("Játéktörténet", (dialog, which) -> {
+                        Intent intent = new Intent(GameMultiplicationDivisionActivity.this, GameHistoryActivity.class);
                         startActivity(intent);
                         finish();
                     })

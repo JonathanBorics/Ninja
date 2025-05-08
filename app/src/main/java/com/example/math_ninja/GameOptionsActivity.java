@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class GameOptionsActivity extends AppCompatActivity {
     @Override
@@ -32,30 +34,37 @@ public class GameOptionsActivity extends AppCompatActivity {
 
         // Felhasználói név megjelenítése
         TextView userNameTextView = findViewById(R.id.userNameTextView);
-        userNameTextView.setText("Hi, " + userName + "!");
+        userNameTextView.setText(userName);
 
         // Pontszám megjelenítése
         TextView totalScoreTextView = findViewById(R.id.totalScoreTextView);
         DatabaseManager dbManager = new DatabaseManager(this);
-        try {
-            int totalScore = dbManager.getTotalScore(userId);
-            totalScoreTextView.setText("Your total score: " + totalScore);
-        } catch (Exception e) {
-            Toast.makeText(this, "Error retrieving score!", Toast.LENGTH_SHORT).show();
-            Log.e("GameOptionsActivity", "Error retrieving score: ", e);
-        }
+        int totalScore = dbManager.getTotalScore(userId);
+        totalScoreTextView.setText(String.valueOf(totalScore));
 
-        // Plusz/mínusz játék gomb eseménykezelője
-        Button optionButton1 = findViewById(R.id.optionButton1);
-        optionButton1.setOnClickListener(v -> {
+        // Játéktörténet gomb eseménykezelője
+        Button historyLinkButton = findViewById(R.id.historyLinkButton);
+        historyLinkButton.setOnClickListener(v -> {
+            Intent intent = new Intent(GameOptionsActivity.this, GameHistoryActivity.class);
+            startActivity(intent);
+        });
+
+        // Kártyák eseménykezelői
+        CardView plusMinusCard = findViewById(R.id.plusMinusCard);
+        plusMinusCard.setOnClickListener(v -> {
             Intent intent = new Intent(GameOptionsActivity.this, GamePlusMinusGame.class);
             startActivity(intent);
         });
 
-        // Szorzás/osztás játék gomb eseménykezelője
-        Button optionButton2 = findViewById(R.id.optionButton2);
-        optionButton2.setOnClickListener(v -> {
+        CardView multiplyDivideCard = findViewById(R.id.multiplyDivideCard);
+        multiplyDivideCard.setOnClickListener(v -> {
             Intent intent = new Intent(GameOptionsActivity.this, GameMultiplicationDivisionActivity.class);
+            startActivity(intent);
+        });
+
+        CardView historyCard = findViewById(R.id.historyCard);
+        historyCard.setOnClickListener(v -> {
+            Intent intent = new Intent(GameOptionsActivity.this, GameHistoryActivity.class);
             startActivity(intent);
         });
     }

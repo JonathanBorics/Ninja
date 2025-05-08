@@ -119,25 +119,46 @@ public class GamePlusMinusGame extends AppCompatActivity {
 
     private void generateMathQuestion() {
         Random random = new Random();
-        int num1 = random.nextInt(20) + 1;
-        int num2 = random.nextInt(20) + 1;
 
+        // Válasszunk véletlenszerű műveletet
         String[] operations = {"+", "-"};
         String operation = operations[random.nextInt(operations.length)];
-        int correctAnswer = operation.equals("+") ? num1 + num2 : num1 - num2;
 
+        int num1, num2, correctAnswer;
+
+        if (operation.equals("+")) {
+            // Összeadás: két szám 1 és 50 között
+            num1 = random.nextInt(50) + 1;
+            num2 = random.nextInt(50) + 1;
+            correctAnswer = num1 + num2;
+        } else {
+            // Kivonás: biztosítsuk, hogy pozitív eredményt kapjunk
+            num1 = random.nextInt(50) + 10; // Nagyobb szám (10-60)
+            num2 = random.nextInt(num1); // Kisebb szám (0-(num1-1))
+            correctAnswer = num1 - num2;
+        }
+
+        // Opciók generálása
         int[] options = new int[4];
         int correctPosition = random.nextInt(4);
         options[correctPosition] = correctAnswer;
 
+        // Generáljunk három különböző helytelen választ
         for (int i = 0; i < 4; i++) {
             if (i != correctPosition) {
+                int incorrectAnswer;
                 do {
-                    options[i] = correctAnswer + random.nextInt(10) - 5;
-                } while (options[i] == correctAnswer || options[i] <= 0);
+                    // A helytelen válasz a helyes válasz ±5 tartományában legyen
+                    incorrectAnswer = correctAnswer + random.nextInt(11) - 5;
+                } while (incorrectAnswer == correctAnswer || // Ne egyezzen a helyes válasszal
+                        incorrectAnswer < 0 || // Pozitív legyen
+                        contains(options, incorrectAnswer)); // Ne ismétlődjön
+
+                options[i] = incorrectAnswer;
             }
         }
 
+        // UI frissítése a fő szálon
         runOnUiThread(() -> {
             mathQuestion.setText(num1 + " " + operation + " " + num2);
             optionButton1.setText(String.valueOf(options[0]));
@@ -147,6 +168,16 @@ public class GamePlusMinusGame extends AppCompatActivity {
         });
     }
 
+    // Segédfüggvény annak ellenőrzésére, hogy egy szám már szerepel-e a tömbben
+    private boolean contains(int[] array, int value) {
+        for (int item : array) {
+            if (item == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void checkAnswer(int selectedAnswer) {
         String currentQuestionText = mathQuestion.getText().toString();
         String[] parts = currentQuestionText.split(" ");
@@ -154,7 +185,13 @@ public class GamePlusMinusGame extends AppCompatActivity {
         int num1 = Integer.parseInt(parts[0]);
         int num2 = Integer.parseInt(parts[2]);
         String operation = parts[1];
-        int correctAnswer = operation.equals("+") ? num1 + num2 : num1 - num2;
+
+        int correctAnswer;
+        if (operation.equals("+")) {
+            correctAnswer = num1 + num2;
+        } else { // "-"
+            correctAnswer = num1 - num2;
+        }
 
         if (selectedAnswer == correctAnswer) {
             currentScore += 5;
@@ -165,16 +202,16 @@ public class GamePlusMinusGame extends AppCompatActivity {
         } else {
             currentScore -= 3;
             wrongAnswerCount++;
-            livesRemaining--; // Csökkentjük az életek számát
-            updateLivesUI(); // Frissítjük a szívek megjelenítését
+            livesRemaining--;
+            updateLivesUI();
 
             runOnUiThread(() -> {
                 scoreTextView.setText("Score: " + currentScore);
                 Toast.makeText(this, "Helytelen válasz!", Toast.LENGTH_SHORT).show();
             });
 
-            if (livesRemaining <= 0) { // Ha nincs több élet, vége a játéknak
-                triggerVibration(); // Rezgés hozzáadása
+            if (livesRemaining <= 0) {
+                triggerVibration();
                 endGame();
                 return;
             }
@@ -197,12 +234,21 @@ public class GamePlusMinusGame extends AppCompatActivity {
     }
 
     private void endGame() {
+        // Mentsük el a játékmenetet
+        DatabaseManager dbManager = new DatabaseManager(this);
+        dbManager.saveGameSession(playerId, "plus_minus", currentScore);
+
         runOnUiThread(() -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Game over!")
-                    .setMessage("Total score: " + currentScore + "\nTry again!")
-                    .setPositiveButton("Back to main menu", (dialog, which) -> {
+            builder.setTitle("Játék vége")
+                    .setMessage("Összpontszám: " + currentScore + "\nPróbáld újra!")
+                    .setPositiveButton("Vissza a főmenübe", (dialog, which) -> {
                         Intent intent = new Intent(GamePlusMinusGame.this, GameOptionsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNeutralButton("Játéktörténet", (dialog, which) -> {
+                        Intent intent = new Intent(GamePlusMinusGame.this, GameHistoryActivity.class);
                         startActivity(intent);
                         finish();
                     })

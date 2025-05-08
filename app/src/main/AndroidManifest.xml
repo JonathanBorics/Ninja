@@ -37,7 +37,8 @@
         <activity android:name=".GameMultiplicationDivisionActivity" android:exported="true" />
         <activity android:name=".GameHighScore" />
 
-
+        <!-- Új játéktörténet Activity -->
+        <activity android:name=".GameHistoryActivity" android:exported="true" />
 
     </application>
 </manifest>
