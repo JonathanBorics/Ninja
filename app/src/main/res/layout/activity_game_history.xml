@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Játéktörténet"
+        android:text="Game history"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
@@ -43,7 +43,7 @@
         android:layout_below="@id/gameHistoryList"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Vissza"
+        android:text="Back"
         android:textSize="18sp"
         android:backgroundTint="#FFA500"
         android:textColor="@android:color/white" />

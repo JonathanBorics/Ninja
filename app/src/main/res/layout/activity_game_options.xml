@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Játékos:"
+                    android:text="Player:"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
@@ -58,7 +58,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Összesített pontszám:"
+                    android:text="Total score:"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
@@ -80,7 +80,7 @@
                 android:id="@+id/historyLinkButton"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Játéktörténet megtekintése"
+                android:text="Check game history"
                 android:textSize="14sp"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#4CAF50"
@@ -103,8 +103,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Válassz játékmódot!"
-            android:textSize="24sp"
+            android:text="Choose game mode!"
+            android:textSize="27sp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
@@ -135,7 +135,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Összeadás és Kivonás"
+                    android:text="Addition and Subtraction"
                     android:textSize="22sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
@@ -174,7 +174,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Szorzás és Osztás"
+                    android:text="Multiplication and Division"
                     android:textSize="22sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
@@ -212,7 +212,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Játéktörténet"
+                    android:text="Game history"
                     android:textSize="22sp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
